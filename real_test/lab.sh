@@ -194,13 +194,19 @@ EOF
 rm -f /etc/config/wireless
 wifi config
 uci -q get wireless.radio7 >/dev/null || { echo 'expected radio0..radio7' >&2; exit 1; }
-for i in 1 2 3 4 5 6 7; do
+# All radios share one 2.4 GHz channel so the stations can associate. hostapd
+# takes the country from the last radio that sets one, and rejects '00' (the
+# generated default); 2.4 GHz has no 80 MHz mode, so drop the generated EHT80.
+for i in 0 1 2 3 4 5 6 7; do
+  uci set wireless.radio\$i.band='2g'
+  uci set wireless.radio\$i.channel='1'
+  uci set wireless.radio\$i.htmode='HT20'
+  uci set wireless.radio\$i.country='US'
   uci set wireless.radio\$i.disabled='1'
-  uci -q delete wireless.default_radio\$i || true
+  [ \$i = 0 ] || uci -q delete wireless.default_radio\$i || true
 done
 uci set wireless.radio0.disabled='0'
-uci set wireless.radio0.band='2g'
-uci set wireless.radio0.channel='1'
+uci set wireless.default_radio0.disabled='0'   # 25.12 generates the interface disabled
 uci set wireless.default_radio0.network='lan'
 uci set wireless.default_radio0.mode='ap'
 uci set wireless.default_radio0.ssid='$SSID'
@@ -208,8 +214,8 @@ uci set wireless.default_radio0.encryption='psk2'
 uci set wireless.default_radio0.key='$PSK'
 uci commit wireless
 wifi
-for i in \$(seq 30); do [ -n "\$(ubus list 'hostapd.*')" ] && break; sleep 1; done
-[ -n "\$(ubus list 'hostapd.*')" ] || { echo 'hostapd did not come up' >&2; exit 1; }
+for i in \$(seq 30); do [ -n "\$(ubus list 'hostapd.*' 2>/dev/null)" ] && break; sleep 1; done
+[ -n "\$(ubus list 'hostapd.*' 2>/dev/null)" ] || { echo 'hostapd did not come up' >&2; exit 1; }
 EOF
 
   log "writing Wi-Fi fake station configs"

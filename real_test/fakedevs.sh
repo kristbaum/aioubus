@@ -216,6 +216,8 @@ uci -q get wireless.$radio >/dev/null || { echo 'missing $radio (load mac80211_h
 uci set wireless.$radio.disabled='1'
 uci set wireless.$radio.band='2g'
 uci set wireless.$radio.channel='1'
+uci set wireless.$radio.htmode='HT20'
+uci set wireless.$radio.country='US'
 uci -q delete wireless.default_$radio
 uci -q delete wireless.$sec
 uci set wireless.$sec=wifi-iface
