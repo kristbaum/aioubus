@@ -106,7 +106,7 @@ async def test_live_dnsmasq_or_odhcpd(live: UbusClient) -> None:
     try:
         await live.get_dnsmasq_leases()
     except UbusNotFoundError:
-        pytest.skip("no dnsmasq lease file")
+        pytest.skip(reason="no dnsmasq lease file")
     with contextlib.suppress(UbusNotFoundError):  # odhcpd-ipv6only
         await live.get_odhcpd_ipv4_leases()
 
