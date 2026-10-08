@@ -133,7 +133,9 @@ async def test_live_wired_hosts_visible(live: UbusClient) -> None:
     assert EXPECT_WIRED.keys() <= hints.keys()
     for mac, name in EXPECT_WIRED.items():
         assert hints[mac].ipv4_addresses, mac
-        assert hints[mac].name == name
+        # Hint names come from reverse DNS, so dnsmasq appends the local
+        # domain ("nas.lan"); the lease file below has the bare DHCP hostname.
+        assert (hints[mac].name or "").partition(".")[0] == name
 
     leases = {lease.mac: lease for lease in await live.get_dnsmasq_leases()}
     assert EXPECT_WIRED.keys() <= leases.keys()
