@@ -77,6 +77,16 @@ CASES: list[tuple[str, Parser, Any]] = [
         lambda p: HostapdClients.from_json("phy0-ap0", p),
         payload(derived("hostapd_get_clients_wireless")),
     ),
+    (
+        "wireless_hwsim",
+        _dict_each(WirelessRadio.from_json),
+        payload(body("luci_getWirelessDevices", "openwrt-25.12.5-hwsim")),
+    ),
+    (
+        "hostapd_hwsim",
+        lambda p: HostapdClients.from_json("phy0-ap0", p),
+        payload(body("hostapd_get_clients_phy0-ap0", "openwrt-25.12.5-hwsim")),
+    ),
     ("uci_config", lambda p: parse_uci_config(p, "t"), payload(body("uci_get_dhcp_type_dnsmasq"))),
     ("uci_section", lambda p: parse_uci_section(p, "t"), payload(body("uci_get_section"))),
     ("uci_value", lambda p: parse_uci_value(p, "t"), payload(body("uci_get_list_option"))),

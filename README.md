@@ -444,14 +444,16 @@ Taken from the sources and from captured traffic (see *Verification* below):
 | `getHostHints`, `getDHCPLeases`, `getNetworkDevices`, `getBoardJSON`, `system board`, `uci get`, `file read`, `list` | Captured from real devices with real DHCP clients (Docker `openwrt/rootfs` x86-64 images) |
 | `dhcp ipv4leases` | Captured from 25.12.5 running full odhcpd with real DHCP clients |
 | The minimal ACL above | Tested live with a restricted account on 25.12.5 and 24.10.8 |
-| `hostapd.* get_clients`, `getWirelessDevices` with a radio | **From source only** (`hostapd/src/src/ap/ubus.c` in openwrt/openwrt, `luci.c` in openwrt/luci, netifd's `wireless-device.uc`); not captured, because the test devices had no Wi-Fi. These models keep the untouched payload in `raw`. |
+| `hostapd.* get_clients` (2.4 GHz AP, associated stations), `getWirelessDevices` with AP and station interfaces | Captured from 25.12.5 in the QEMU lab (`real_test/`), where the radios are virtual (`mac80211_hwsim`) and five stations really associate with hostapd, and exercised live by `tests/test_live.py`. Signal and rates there come from the simulator, not from a real driver. |
+| `hostapd.*` for wired 802.1X, 5 GHz, unauthorized stations, MFP | From source only (`hostapd/src/src/ap/ubus.c` in openwrt/openwrt, `luci.c` in openwrt/luci). The models keep the untouched payload in `raw`. |
 | Infinite leases (`expires: false`, `valid: -1`), DHCPv6 leases, odhcpd's pre-2024 field names | From source only |
 | Array-wrapped `list` results | From unreleased nginx-ubus-module HEAD only. OpenWrt ships revision `b2d7260`, which was captured and matches uhttpd. |
 
 The fixtures are in `tests/fixtures/`: `openwrt-*` are raw captured bodies,
-and `derived/` cites the source each one was written from. To capture from
-your own device, especially one with Wi-Fi, run
-`scripts/capture_fixtures.py`. Contributions of hostapd captures are welcome.
+and `derived/` cites the source each one was written from;
+`openwrt-25.12.5-hwsim` comes from the QEMU lab (`real_test/lab.sh capture`).
+To capture from your own device, run `scripts/capture_fixtures.py`.
+Contributions of hostapd captures from real Wi-Fi hardware are welcome.
 
 ## Development
 

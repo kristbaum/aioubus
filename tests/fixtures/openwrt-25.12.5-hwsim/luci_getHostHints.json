@@ -1,0 +1,16 @@
+{
+  "source": "captured from OpenWrt 25.12.5 (QEMU x86-64, mac80211_hwsim)",
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "call",
+    "params": [
+      "00000000000000000000000000000001",
+      "luci-rpc",
+      "getHostHints",
+      {}
+    ]
+  },
+  "http_status": 200,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[0,{\"00:0E:58:A1:00:04\":{\"ipaddrs\":[\"192.168.77.147\"],\"ip6addrs\":[],\"name\":\"sonos-wired.lan\"},\"00:11:32:A1:00:01\":{\"ipaddrs\":[\"192.168.77.121\"],\"ip6addrs\":[],\"name\":\"nas.lan\"},\"00:17:88:A1:00:02\":{\"ipaddrs\":[\"192.168.77.242\"],\"ip6addrs\":[],\"name\":\"hue-bridge.lan\"},\"02:00:00:A1:00:05\":{\"ipaddrs\":[\"192.168.77.122\"],\"ip6addrs\":[],\"name\":\"desktop.lan\"},\"02:00:00:B2:00:03\":{\"ipaddrs\":[],\"ip6addrs\":[\"fe80::ff:feb2:3\"]},\"02:5A:3C:B2:00:02\":{\"ipaddrs\":[],\"ip6addrs\":[\"fe80::5a:3cff:feb2:2\"]},\"18:B4:30:B2:00:05\":{\"ipaddrs\":[],\"ip6addrs\":[\"fe80::1ab4:30ff:feb2:5\"]},\"24:0A:C4:B2:00:04\":{\"ipaddrs\":[],\"ip6addrs\":[\"fe80::260a:c4ff:feb2:4\"]},\"52:54:00:77:00:01\":{\"ipaddrs\":[\"192.168.77.1\"],\"ip6addrs\":[\"fe80::5054:ff:fe77:1\"],\"name\":\"OpenWrt.lan\"},\"52:54:00:77:00:02\":{\"ipaddrs\":[\"10.0.2.15\"],\"ip6addrs\":[\"fe80::5054:ff:fe77:2\"]},\"52:55:0A:00:02:02\":{\"ipaddrs\":[\"10.0.2.2\"],\"ip6addrs\":[]},\"52:55:0A:00:02:03\":{\"ipaddrs\":[\"10.0.2.3\"],\"ip6addrs\":[]},\"52:56:00:00:00:02\":{\"ipaddrs\":[],\"ip6addrs\":[\"fe80::2\"]},\"DC:A6:32:A1:00:03\":{\"ipaddrs\":[\"192.168.77.140\"],\"ip6addrs\":[],\"name\":\"raspberrypi.lan\"},\"F0:18:98:B2:00:01\":{\"ipaddrs\":[],\"ip6addrs\":[\"fe80::f218:98ff:feb2:1\"]},\"FA:F7:CE:31:0D:33\":{\"ipaddrs\":[\"192.168.77.2\"],\"ip6addrs\":[]}}]}"
+}

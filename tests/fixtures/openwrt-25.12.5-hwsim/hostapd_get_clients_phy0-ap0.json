@@ -1,0 +1,16 @@
+{
+  "source": "captured from OpenWrt 25.12.5 (QEMU x86-64, mac80211_hwsim)",
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "call",
+    "params": [
+      "00000000000000000000000000000001",
+      "hostapd.phy0-ap0",
+      "get_clients",
+      {}
+    ]
+  },
+  "http_status": 200,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[0,{\"freq\":2412,\"clients\":{\"18:b4:30:b2:00:05\":{\"auth\":true,\"assoc\":true,\"authorized\":true,\"preauth\":false,\"wds\":false,\"wmm\":true,\"ht\":true,\"vht\":false,\"he\":false,\"wps\":false,\"mfp\":false,\"mbo\":false,\"rrm\":[0,0,0,0,0],\"extended_capabilities\":[4,0,74,2,1,64,0,64,0,1],\"aid\":5,\"bytes\":{\"rx\":1630,\"tx\":538},\"airtime\":{\"rx\":0,\"tx\":0},\"packets\":{\"rx\":19,\"tx\":5},\"rate\":{\"rx\":1440000,\"tx\":100000},\"signal\":-20,\"capabilities\":{}},\"02:5a:3c:b2:00:02\":{\"auth\":true,\"assoc\":true,\"authorized\":true,\"preauth\":false,\"wds\":false,\"wmm\":true,\"ht\":true,\"vht\":false,\"he\":false,\"wps\":false,\"mfp\":false,\"mbo\":false,\"rrm\":[0,0,0,0,0],\"extended_capabilities\":[4,0,74,2,1,64,0,64,0,1],\"aid\":4,\"bytes\":{\"rx\":1630,\"tx\":538},\"airtime\":{\"rx\":0,\"tx\":0},\"packets\":{\"rx\":19,\"tx\":5},\"rate\":{\"rx\":1440000,\"tx\":100000},\"signal\":-20,\"capabilities\":{}},\"24:0a:c4:b2:00:04\":{\"auth\":true,\"assoc\":true,\"authorized\":true,\"preauth\":false,\"wds\":false,\"wmm\":true,\"ht\":true,\"vht\":false,\"he\":false,\"wps\":false,\"mfp\":false,\"mbo\":false,\"rrm\":[0,0,0,0,0],\"extended_capabilities\":[4,0,74,2,1,64,0,64,0,1],\"aid\":3,\"bytes\":{\"rx\":1630,\"tx\":538},\"airtime\":{\"rx\":0,\"tx\":0},\"packets\":{\"rx\":19,\"tx\":5},\"rate\":{\"rx\":1440000,\"tx\":100000},\"signal\":-20,\"capabilities\":{}},\"f0:18:98:b2:00:01\":{\"auth\":true,\"assoc\":true,\"authorized\":true,\"preauth\":false,\"wds\":false,\"wmm\":true,\"ht\":true,\"vht\":false,\"he\":false,\"wps\":false,\"mfp\":false,\"mbo\":false,\"rrm\":[0,0,0,0,0],\"extended_capabilities\":[4,0,74,2,1,64,0,64,0,1],\"aid\":2,\"bytes\":{\"rx\":1630,\"tx\":538},\"airtime\":{\"rx\":0,\"tx\":0},\"packets\":{\"rx\":19,\"tx\":5},\"rate\":{\"rx\":1440000,\"tx\":100000},\"signal\":-20,\"capabilities\":{}},\"02:00:00:b2:00:03\":{\"auth\":true,\"assoc\":true,\"authorized\":true,\"preauth\":false,\"wds\":false,\"wmm\":true,\"ht\":true,\"vht\":false,\"he\":false,\"wps\":false,\"mfp\":false,\"mbo\":false,\"rrm\":[0,0,0,0,0],\"extended_capabilities\":[4,0,74,2,1,64,0,64,0,1],\"aid\":1,\"bytes\":{\"rx\":1630,\"tx\":538},\"airtime\":{\"rx\":0,\"tx\":0},\"packets\":{\"rx\":19,\"tx\":5},\"rate\":{\"rx\":1300000,\"tx\":100000},\"signal\":-20,\"capabilities\":{}}}}]}"
+}

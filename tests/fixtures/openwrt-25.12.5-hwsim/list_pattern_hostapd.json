@@ -1,0 +1,13 @@
+{
+  "source": "captured from OpenWrt 25.12.5 (QEMU x86-64, mac80211_hwsim)",
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "list",
+    "params": [
+      "hostapd.*"
+    ]
+  },
+  "http_status": 200,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":{\"hostapd.phy0-ap0\":{\"reload\":{},\"get_clients\":{},\"get_sta_ies\":{\"address\":\"string\"},\"get_status\":{},\"del_client\":{\"addr\":\"string\",\"reason\":\"number\",\"deauth\":\"boolean\",\"ban_time\":\"number\"},\"update_airtime\":{\"sta\":\"string\",\"weight\":\"number\"},\"list_bans\":{},\"wps_start\":{},\"wps_status\":{},\"wps_cancel\":{},\"update_beacon\":{},\"get_features\":{},\"switch_chan\":{\"freq\":\"number\",\"bcn_count\":\"number\",\"center_freq1\":\"number\",\"center_freq2\":\"number\",\"bandwidth\":\"number\",\"sec_channel_offset\":\"number\",\"ht\":\"boolean\",\"vht\":\"boolean\",\"he\":\"boolean\",\"block_tx\":\"boolean\",\"force\":\"boolean\"},\"set_vendor_elements\":{\"vendor_elements\":\"string\"},\"notify_response\":{\"notify_response\":\"number\"},\"bss_mgmt_enable\":{\"neighbor_report\":\"boolean\",\"beacon_report\":\"boolean\",\"link_measurement\":\"boolean\",\"bss_transition\":\"boolean\"},\"rrm_nr_get_own\":{},\"rrm_nr_list\":{},\"rrm_nr_set\":{\"list\":\"array\"},\"rrm_beacon_req\":{\"addr\":\"string\",\"mode\":\"number\",\"op_class\":\"number\",\"channel\":\"number\",\"duration\":\"number\",\"bssid\":\"string\",\"ssid\":\"string\"},\"link_measurement_req\":{\"addr\":\"string\",\"tx-power-used\":\"number\",\"tx-power-max\":\"number\"},\"bss_transition_request\":{\"addr\":\"string\",\"disassociation_imminent\":\"boolean\",\"disassociation_timer\":\"number\",\"validity_period\":\"number\",\"neighbors\":\"array\",\"abridged\":\"boolean\",\"dialog_token\":\"number\",\"mbo_reason\":\"number\",\"cell_pref\":\"number\",\"reassoc_delay\":\"number\"}}}}"
+}

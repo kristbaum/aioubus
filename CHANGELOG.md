@@ -15,3 +15,5 @@ First release.
   `hostapd.* get_clients`, `uci get`, `file read`, odhcpd `ipv4leases`,
   dnsmasq lease-file parsing, object listing, and a generic `call()`.
 - Exception hierarchy rooted at `UbusError`.
+- `hostapd.* get_clients` and `getWirelessDevices` verified against captured
+  traffic from virtual radios in the QEMU test lab (`real_test/`).

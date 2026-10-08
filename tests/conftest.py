@@ -1,7 +1,9 @@
 """Shared fixtures.
 
 Fixture files under ``tests/fixtures/openwrt-*`` are raw HTTP bodies captured
-from real OpenWrt releases (see ``scripts/capture_fixtures.py``). Files under
+from real OpenWrt releases (see ``scripts/capture_fixtures.py``);
+``openwrt-25.12.5-hwsim`` comes from the QEMU lab in ``real_test/``, with
+virtual radios and associated stations. Files under
 ``tests/fixtures/derived`` were written from the cited upstream source where
 no live capture was possible.
 

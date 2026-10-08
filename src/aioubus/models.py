@@ -278,7 +278,8 @@ class HostapdClient:
     Field set derived from hostapd's ``ubus.c`` in openwrt/openwrt; driver
     statistics (``signal``, byte/packet counters, rates) are only present
     when the driver reports them. For 802.1X wired objects only
-    ``authorized`` is reported. Not verified against a live radio.
+    ``authorized`` is reported. Verified against hostapd on a virtual
+    (``mac80211_hwsim``) 2.4 GHz radio; not against real Wi-Fi hardware.
     """
 
     mac: str
@@ -528,7 +529,8 @@ class WirelessInterface:
     """An interface of a radio in ``luci-rpc getWirelessDevices``.
 
     Shape derived from netifd's ``network.wireless status`` plus the
-    ``iwinfo`` table added by rpcd-mod-luci; not verified on a live radio.
+    ``iwinfo`` table added by rpcd-mod-luci. Verified on virtual
+    (``mac80211_hwsim``) radios with AP and station interfaces.
     """
 
     section: str | None

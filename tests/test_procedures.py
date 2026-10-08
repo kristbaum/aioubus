@@ -254,6 +254,87 @@ async def test_hostapd_wired_and_empty(client: UbusClient, ubus: FakeUbus) -> No
     assert empty.clients == {}
 
 
+# Captured from the QEMU lab (real_test/): one AP on a mac80211_hwsim radio and
+# the five Wi-Fi fakes of fakedevs.sh associated to it as stations.
+HWSIM = "openwrt-25.12.5-hwsim"
+LAB_WIFI_FAKES = {
+    "f0:18:98:b2:00:01",
+    "02:5a:3c:b2:00:02",
+    "02:00:00:b2:00:03",
+    "24:0a:c4:b2:00:04",
+    "18:b4:30:b2:00:05",
+}
+
+
+async def test_hostapd_captured(client: UbusClient, ubus: FakeUbus) -> None:
+    await client.login()
+    ubus.respond(body("list_all", HWSIM))
+    ubus.respond(body("hostapd_get_clients_phy0-ap0", HWSIM))
+
+    interfaces = await client.list_hostapd_interfaces()
+    clients = await client.get_hostapd_clients("phy0-ap0")
+
+    # "hostapd" and "hostapd-auth" are daemon objects, not interfaces.
+    assert interfaces == ("phy0-ap0",)
+    assert clients.frequency == 2412
+    assert clients.clients.keys() == LAB_WIFI_FAKES
+    for station in clients.clients.values():
+        assert station.authorized
+        assert station.authenticated
+        assert station.associated
+        assert station.signal == -20
+        assert station.rx_bytes is not None
+        assert station.rx_rate is not None
+    # Newer hostapd adds keys that the model does not name; they stay in raw.
+    assert clients.clients["f0:18:98:b2:00:01"].raw["mbo"] is False
+
+
+async def test_list_objects_hostapd_captured(client: UbusClient, ubus: FakeUbus) -> None:
+    await client.login()
+    ubus.respond(body("list_pattern_hostapd", HWSIM))
+
+    objects = await client.list_objects("hostapd.*")
+
+    assert list(objects) == ["hostapd.phy0-ap0"]
+    assert objects["hostapd.phy0-ap0"]["get_clients"] == {}
+    assert objects["hostapd.phy0-ap0"]["del_client"]["addr"] == "string"
+
+
+async def test_wireless_devices_captured(client: UbusClient, ubus: FakeUbus) -> None:
+    ubus.respond(body("luci_getWirelessDevices", HWSIM))
+
+    radios = await client.get_wireless_devices()
+
+    assert list(radios) == [f"radio{i}" for i in range(8)]
+    (ap,) = radios["radio0"].interfaces
+    assert (ap.section, ap.ifname, ap.ssid, ap.mode) == (
+        "default_radio0",
+        "phy0-ap0",
+        "testnet",
+        "Master",
+    )
+    (station,) = radios["radio1"].interfaces
+    assert (station.section, station.ifname, station.mode) == ("fake_iphone", "phy1-sta0", "Client")
+    assert radios["radio7"].disabled is True
+    assert radios["radio7"].interfaces == ()
+
+
+async def test_host_hints_captured_lab(client: UbusClient, ubus: FakeUbus) -> None:
+    ubus.respond(body("luci_getHostHints", HWSIM))
+
+    hints = await client.get_host_hints()
+
+    # DHCP clients are named through reverse DNS, so with the local domain.
+    nas = hints["00:11:32:a1:00:01"]
+    assert nas.name == "nas.lan"
+    assert nas.ipv4_addresses
+    # The Wi-Fi fakes are station interfaces on the router itself; host hints
+    # include the router's own interfaces, without address or name.
+    for mac in LAB_WIFI_FAKES:
+        assert hints[mac].name is None
+        assert hints[mac].ipv4_addresses == ()
+
+
 @pytest.mark.parametrize("release", RELEASES)
 async def test_uci_get_config_by_type(client: UbusClient, ubus: FakeUbus, release: str) -> None:
     ubus.respond(body("uci_get_dhcp_type_dnsmasq", release))

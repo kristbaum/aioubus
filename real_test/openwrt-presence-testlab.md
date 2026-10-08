@@ -63,9 +63,8 @@ Together the live tests cover:
 - wired fakes appear in `getHostHints` with an IPv4 address and their DHCP
   hostname, and in the dnsmasq lease file read through `file.read`
 - Wi-Fi fakes appear in `hostapd.* get_clients` as authorized and associated
-  on 2412 MHz, and `getWirelessDevices` returns radios. Before this lab these
-  payloads were checked against source only (see the README's
-  *Verification* table).
+  on 2412 MHz, and `getWirelessDevices` returns radios. Fixtures captured
+  from the lab are in `tests/fixtures/openwrt-25.12.5-hwsim/`.
 
 Arguments after `test` are passed on to pytest: `./real_test/lab.sh test -k wifi -x`.
 
@@ -136,10 +135,12 @@ it to disappear:
   or a neighbour entry exists. This is the behaviour of a real router.
 - `down --hard` also deletes the device's neighbour entry, so ARP-based
   presence drops at once instead of after ARP expiry.
-- Wi-Fi fakes have no IP address. The station interfaces are not attached to
-  a network. They show up only in `hostapd.* get_clients`, not in
-  `getHostHints` or the leases. A Wi-Fi fake that leaves disappears from
-  `get_clients` at once.
+- Wi-Fi fakes have no IP address, because the station interfaces are not
+  attached to a network. They show up in `hostapd.* get_clients`. They are
+  missing from the leases. They do appear in `getHostHints`, but with no name
+  and no address: the stations are interfaces on the router itself, and host
+  hints include the router's own interfaces. A Wi-Fi fake that leaves
+  disappears from `get_clients` at once.
 
 ## Workflows
 
