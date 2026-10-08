@@ -225,6 +225,9 @@ curl -s http://192.168.77.1/ubus -d "{\"jsonrpc\":\"2.0\",\"id\":2,\"method\":\"
   the VM booted but is unreachable, check `ip -br addr show br-owrt` and
   that `tap-owrt` is a port of the bridge (`bridge link`). A disk created
   with a different `LAB_NET` keeps its old router IP: run `reset`.
+  When IPv4 is broken, the router is usually still reachable over IPv6
+  link-local, because its MAC address is fixed:
+  `ssh -i real_test/.lab/id_ed25519 root@fe80::5054:ff:fe77:1%br-owrt`.
 - **`/dev/kvm not writable`:** add yourself to the `kvm` group (log out and
   back in). Without KVM the lab still works, but much slower.
 - **Wired fake gets no lease:** check for `busybox` on the host. Check the

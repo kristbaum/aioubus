@@ -79,7 +79,8 @@ cmd_image() {
 printf '%s\n%s\n' '$ROOT_PASSWORD' '$ROOT_PASSWORD' | passwd root
 echo '$(cat "$KEY.pub")' > /etc/dropbear/authorized_keys
 chmod 600 /etc/dropbear/authorized_keys
-uci set network.lan.ipaddr='$ROUTER'
+uci set network.lan.ipaddr='$ROUTER/24'   # 25.12 keeps the prefix here, no netmask option
+uci -q delete network.lan.netmask
 uci commit network
 exit 0
 EOF
