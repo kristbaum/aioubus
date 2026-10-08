@@ -1,0 +1,5 @@
+{
+  "source": "derived from openwrt/luci@570b4bfe6f0a libs/rpcd-mod-luci/src/luci.c (rpc_luci_get_dhcp_leases): infinite lease -> blobmsg_add_u8(expires, 0) -> false",
+  "derived": true,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[0,{\"dhcp_leases\":[{\"expires\":false,\"hostname\":\"nas\",\"macaddr\":\"00:11:32:DE:AD:01\",\"ipaddr\":\"192.168.1.10\"},{\"expires\":0,\"macaddr\":\"B8:27:EB:12:AB:CD\",\"ipaddr\":\"192.168.1.240\"}],\"dhcp6_leases\":[{\"expires\":3512,\"interface\":\"br-lan\",\"hostname\":\"laptop\",\"macaddr\":\"02:42:C0:A8:4D:11\",\"duid\":\"0001000129d6c6f20242c0a84d11\",\"iaid\":\"0a8d4d11\",\"ip6addr\":\"fd2a:510b:6393::abc\",\"ip6addrs\":[\"fd2a:510b:6393::abc/128\"]}]}]}"
+}

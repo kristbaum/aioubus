@@ -1,0 +1,5 @@
+{
+  "source": "derived from openwrt/openwrt@665fcb0f0518 package/network/services/hostapd/src/src/ap/ubus.c (hostapd_bss_get_clients, hostapd_bss_clients_add); MACSTR is lowercase",
+  "derived": true,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[0,{\"freq\":5180,\"clients\":{\"a4:c3:f0:11:22:33\":{\"auth\":true,\"assoc\":true,\"authorized\":true,\"preauth\":false,\"wds\":false,\"wmm\":true,\"ht\":true,\"vht\":true,\"he\":false,\"wps\":false,\"mfp\":true,\"rrm\":[0,0,0,0,0],\"extended_capabilities\":[4,0,8,0,0,0,0,64],\"aid\":1,\"bytes\":{\"rx\":1823311,\"tx\":9412233},\"airtime\":{\"rx\":0,\"tx\":0},\"packets\":{\"rx\":10234,\"tx\":12873},\"rate\":{\"rx\":866700,\"tx\":780000},\"signal\":-52,\"capabilities\":{}},\"6c:40:08:aa:bb:cc\":{\"auth\":true,\"assoc\":true,\"authorized\":false,\"preauth\":false,\"wds\":false,\"wmm\":true,\"ht\":true,\"vht\":false,\"he\":false,\"wps\":false,\"mfp\":false,\"rrm\":[0,0,0,0,0],\"extended_capabilities\":[],\"aid\":2}}}]}"
+}

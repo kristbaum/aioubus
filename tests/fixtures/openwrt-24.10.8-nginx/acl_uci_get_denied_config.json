@@ -1,0 +1,18 @@
+{
+  "source": "captured from OpenWrt 24.10.8 via nginx-mod-ubus b2d7260 (docker openwrt/rootfs)",
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "call",
+    "params": [
+      "00000000000000000000000000000003",
+      "uci",
+      "get",
+      {
+        "config": "rpcd"
+      }
+    ]
+  },
+  "http_status": 200,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[6]}"
+}

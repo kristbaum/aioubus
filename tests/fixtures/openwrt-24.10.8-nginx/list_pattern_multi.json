@@ -1,0 +1,14 @@
+{
+  "source": "captured from OpenWrt 24.10.8 via nginx-mod-ubus b2d7260 (docker openwrt/rootfs)",
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "list",
+    "params": [
+      "system",
+      "file"
+    ]
+  },
+  "http_status": 200,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":{\"system\":{\"board\":{},\"info\":{},\"reboot\":{},\"watchdog\":{\"frequency\":\"number\",\"timeout\":\"number\",\"magicclose\":\"boolean\",\"stop\":\"boolean\"},\"signal\":{\"pid\":\"number\",\"signum\":\"number\"},\"validate_firmware_image\":{\"path\":\"string\"},\"sysupgrade\":{\"path\":\"string\",\"force\":\"boolean\",\"backup\":\"string\",\"prefix\":\"string\",\"command\":\"string\",\"options\":\"object\"}},\"file\":{\"read\":{\"path\":\"string\",\"base64\":\"boolean\",\"ubus_rpc_session\":\"string\"},\"write\":{\"path\":\"string\",\"data\":\"string\",\"append\":\"boolean\",\"mode\":\"number\",\"base64\":\"boolean\",\"ubus_rpc_session\":\"string\"},\"list\":{\"path\":\"string\",\"ubus_rpc_session\":\"string\"},\"stat\":{\"path\":\"string\",\"ubus_rpc_session\":\"string\"},\"md5\":{\"path\":\"string\",\"ubus_rpc_session\":\"string\"},\"remove\":{\"path\":\"string\",\"ubus_rpc_session\":\"string\"},\"exec\":{\"command\":\"string\",\"params\":\"array\",\"env\":\"object\",\"ubus_rpc_session\":\"string\"}}}}"
+}

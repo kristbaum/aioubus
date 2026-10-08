@@ -1,0 +1,18 @@
+{
+  "source": "captured from OpenWrt 25.12.5 (docker openwrt/rootfs)",
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "call",
+    "params": [
+      "00000000000000000000000000000001",
+      "file",
+      "read",
+      {
+        "path": "/tmp/dhcp.leases"
+      }
+    ]
+  },
+  "http_status": 200,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[0,{\"data\":\"1791520918 b8:27:eb:12:ab:cd 192.168.77.240 raspberrypi 01:b8:27:eb:12:ab:cd\\n1791520918 02:42:c0:a8:4d:12 192.168.77.133 * 01:02:42:c0:a8:4d:12\\n1791520918 02:42:c0:a8:4d:11 192.168.77.132 laptop-anna 01:02:42:c0:a8:4d:11\\n\"}]}"
+}

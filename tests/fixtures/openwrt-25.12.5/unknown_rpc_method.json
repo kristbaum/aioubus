@@ -1,0 +1,8 @@
+{
+  "source": "captured from OpenWrt 25.12.5 (docker openwrt/rootfs)",
+  "request": {
+    "raw_body": "{\"jsonrpc\": \"2.0\", \"id\": 1, \"method\": \"subscribe\", \"params\": []}"
+  },
+  "http_status": 200,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"error\":{\"code\":-32601,\"message\":\"Method not found\"}}"
+}

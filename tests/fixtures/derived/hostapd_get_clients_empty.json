@@ -1,0 +1,5 @@
+{
+  "source": "derived from openwrt/openwrt@665fcb0f0518 package/network/services/hostapd/src/src/ap/ubus.c (hostapd_bss_get_clients, hostapd_bss_clients_add); MACSTR is lowercase",
+  "derived": true,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[0,{\"freq\":2437,\"clients\":{}}]}"
+}

@@ -1,0 +1,19 @@
+{
+  "source": "captured from OpenWrt 24.10.8 (docker openwrt/rootfs)",
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "call",
+    "params": [
+      "00000000000000000000000000000000",
+      "session",
+      "login",
+      {
+        "username": "hass",
+        "password": "<redacted>"
+      }
+    ]
+  },
+  "http_status": 200,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[0,{\"ubus_rpc_session\":\"00000000000000000000000000000003\",\"timeout\":300,\"expires\":299,\"acls\":{\"access-group\":{\"aioubus\":[\"read\"]},\"file\":{\"/tmp/dhcp.leases\":[\"read\"]},\"ubus\":{\"dhcp\":[\"ipv4leases\"],\"file\":[\"read\"],\"hostapd.*\":[\"get_clients\"],\"luci-rpc\":[\"getHostHints\",\"getDHCPLeases\",\"getWirelessDevices\",\"getNetworkDevices\",\"getBoardJSON\"],\"system\":[\"board\"],\"uci\":[\"get\"]},\"uci\":{\"dhcp\":[\"read\"],\"wireless\":[\"read\"]}},\"data\":{\"username\":\"hass\"}}]}"
+}

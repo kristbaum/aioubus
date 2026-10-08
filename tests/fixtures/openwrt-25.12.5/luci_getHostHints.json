@@ -1,0 +1,16 @@
+{
+  "source": "captured from OpenWrt 25.12.5 (docker openwrt/rootfs)",
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "call",
+    "params": [
+      "00000000000000000000000000000001",
+      "luci-rpc",
+      "getHostHints",
+      {}
+    ]
+  },
+  "http_status": 200,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[0,{\"00:11:32:DE:AD:01\":{\"ipaddrs\":[],\"ip6addrs\":[],\"name\":\"nas\"},\"02:42:C0:A8:4D:11\":{\"ipaddrs\":[\"192.168.77.132\",\"192.168.77.2\"],\"ip6addrs\":[],\"name\":\"aioubus-cli-laptop-anna.aioubus-lan\"},\"02:42:C0:A8:4D:12\":{\"ipaddrs\":[\"192.168.77.133\",\"192.168.77.3\"],\"ip6addrs\":[],\"name\":\"aioubus-cli-nohost.aioubus-lan\"},\"3A:2F:46:EB:74:86\":{\"ipaddrs\":[\"192.168.77.254\"],\"ip6addrs\":[]},\"5A:A6:60:71:46:41\":{\"ipaddrs\":[\"192.168.77.1\"],\"ip6addrs\":[\"fe80::58a6:60ff:fe71:4641\"],\"name\":\"aioubus-owrt25.aioubus-lan\"},\"7E:7B:86:1C:4D:76\":{\"ipaddrs\":[\"172.17.0.2\"],\"ip6addrs\":[]},\"B8:27:EB:12:AB:CD\":{\"ipaddrs\":[\"192.168.77.240\",\"192.168.77.4\"],\"ip6addrs\":[],\"name\":\"aioubus-cli-raspberrypi.aioubus-lan\"}}]}"
+}

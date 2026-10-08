@@ -1,0 +1,13 @@
+{
+  "source": "captured from OpenWrt 24.10.8 (docker openwrt/rootfs)",
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "list",
+    "params": [
+      "luci"
+    ]
+  },
+  "http_status": 200,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":{\"luci\":{\"getVersion\":{},\"getInitList\":{\"name\":\"string\"},\"setInitAction\":{\"name\":\"string\",\"action\":\"string\"},\"getLocaltime\":{},\"setLocaltime\":{\"localtime\":\"number\"},\"getTimezones\":{},\"getLEDs\":{},\"getUSBDevices\":{},\"getConntrackHelpers\":{},\"getFeatures\":{},\"getSwconfigFeatures\":{\"switch\":\"string\"},\"getSwconfigPortState\":{\"switch\":\"string\"},\"setPassword\":{\"username\":\"string\",\"password\":\"string\"},\"getBlockDevices\":{},\"setBlockDetect\":{},\"getMountPoints\":{},\"getRealtimeStats\":{\"mode\":\"string\",\"device\":\"string\"},\"getConntrackList\":{},\"getProcessList\":{},\"getBuiltinEthernetPorts\":{}}}}"
+}

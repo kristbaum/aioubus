@@ -1,0 +1,5 @@
+{
+  "source": "derived from openwrt/odhcpd@a6fe4633bb69 src/ubus.c handle_dhcpv4_leases: infinite -> (uint32_t)-1 printed as int32 -1; duid/iaid only with DUID",
+  "derived": true,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[0,{\"device\":{\"br-lan\":{\"leases\":[{\"mac\":\"001132dead01\",\"duid\":\"ff00000001000129d6c6f2001132dead01\",\"iaid\":1,\"hostname\":\"nas\",\"accept-reconf\":false,\"flags\":[\"bound\",\"static\"],\"address\":\"192.168.1.10\",\"valid\":-1}]},\"br-guest\":{\"leases\":[]}}}]}"
+}

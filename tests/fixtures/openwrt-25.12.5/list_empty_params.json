@@ -1,0 +1,11 @@
+{
+  "source": "captured from OpenWrt 25.12.5 (docker openwrt/rootfs)",
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "list",
+    "params": []
+  },
+  "http_status": 200,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":{}}"
+}

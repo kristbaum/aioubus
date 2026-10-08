@@ -1,0 +1,16 @@
+{
+  "source": "captured from OpenWrt 25.12.5 (docker openwrt/rootfs)",
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "call",
+    "params": [
+      "00000000000000000000000000000001",
+      "luci-rpc",
+      "getNetworkDevices",
+      {}
+    ]
+  },
+  "http_status": 200,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[0,{\"br-lan\":{\"name\":\"br-lan\",\"bridge\":true,\"ports\":[\"eth1\"],\"id\":\"7fff.5aa660714641\",\"stp\":false,\"wireless\":false,\"up\":true,\"mtu\":1500,\"qlen\":1000,\"devtype\":\"bridge\",\"ipaddrs\":[{\"address\":\"192.168.77.1\",\"netmask\":\"255.255.255.0\",\"broadcast\":\"192.168.77.255\"}],\"ip6addrs\":[{\"address\":\"fd2a:510b:6393::1\",\"netmask\":\"ffff:ffff:ffff:fff0::\"},{\"address\":\"fe80::58a6:60ff:fe71:4641\",\"netmask\":\"ffff:ffff:ffff:ffff::\"}],\"mac\":\"5A:A6:60:71:46:41\",\"type\":1,\"ifindex\":6,\"stats\":{\"rx_bytes\":62454,\"tx_bytes\":90644,\"tx_errors\":0,\"rx_errors\":0,\"tx_packets\":681,\"rx_packets\":711,\"multicast\":22,\"collisions\":0,\"rx_dropped\":0,\"tx_dropped\":0},\"flags\":{\"up\":true,\"broadcast\":true,\"promisc\":false,\"loopback\":false,\"noarp\":false,\"multicast\":true,\"pointtopoint\":false},\"link\":{\"speed\":10000,\"duplex\":\"unknown\",\"carrier\":true,\"changes\":2,\"up_count\":1,\"down_count\":1}},\"eth1\":{\"name\":\"eth1\",\"master\":\"br-lan\",\"wireless\":false,\"up\":true,\"mtu\":1500,\"devtype\":\"ethernet\",\"ipaddrs\":[],\"ip6addrs\":[],\"mac\":\"5A:A6:60:71:46:41\",\"type\":1,\"ifindex\":3,\"stats\":{\"rx_bytes\":92465,\"tx_bytes\":97186,\"tx_errors\":0,\"rx_errors\":0,\"tx_packets\":720,\"rx_packets\":802,\"multicast\":0,\"collisions\":0,\"rx_dropped\":0,\"tx_dropped\":0},\"flags\":{\"up\":true,\"broadcast\":true,\"promisc\":false,\"loopback\":false,\"noarp\":false,\"multicast\":true,\"pointtopoint\":false},\"link\":{\"speed\":10000,\"duplex\":\"full\",\"carrier\":true,\"changes\":8,\"up_count\":4,\"down_count\":4}},\"eth0\":{\"name\":\"eth0\",\"wireless\":false,\"up\":true,\"mtu\":1500,\"devtype\":\"ethernet\",\"ipaddrs\":[{\"address\":\"172.17.0.2\",\"netmask\":\"255.255.0.0\",\"broadcast\":\"172.17.0.2\"}],\"ip6addrs\":[],\"mac\":\"7E:7B:86:1C:4D:76\",\"type\":1,\"ifindex\":2,\"stats\":{\"rx_bytes\":7682,\"tx_bytes\":4794,\"tx_errors\":0,\"rx_errors\":0,\"tx_packets\":11,\"rx_packets\":56,\"multicast\":0,\"collisions\":0,\"rx_dropped\":0,\"tx_dropped\":0},\"flags\":{\"up\":true,\"broadcast\":true,\"promisc\":false,\"loopback\":false,\"noarp\":false,\"multicast\":true,\"pointtopoint\":false},\"link\":{\"speed\":10000,\"duplex\":\"full\",\"carrier\":true,\"changes\":6,\"up_count\":3,\"down_count\":3}},\"lo\":{\"name\":\"lo\",\"wireless\":false,\"up\":true,\"mtu\":65536,\"qlen\":1000,\"devtype\":\"ethernet\",\"ipaddrs\":[{\"address\":\"127.0.0.1\",\"netmask\":\"255.0.0.0\"}],\"ip6addrs\":[{\"address\":\"::1\",\"netmask\":\"ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff\"}],\"type\":772,\"ifindex\":1,\"stats\":{\"rx_bytes\":13880,\"tx_bytes\":13880,\"tx_errors\":0,\"rx_errors\":0,\"tx_packets\":120,\"rx_packets\":120,\"multicast\":0,\"collisions\":0,\"rx_dropped\":0,\"tx_dropped\":0},\"flags\":{\"up\":true,\"broadcast\":false,\"promisc\":false,\"loopback\":true,\"noarp\":false,\"multicast\":false,\"pointtopoint\":false},\"link\":{\"carrier\":true,\"changes\":0,\"up_count\":0,\"down_count\":0}}}]}"
+}

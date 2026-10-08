@@ -1,0 +1,16 @@
+{
+  "source": "captured from OpenWrt 25.12.5-odhcpd (docker openwrt/rootfs)",
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "call",
+    "params": [
+      "00000000000000000000000000000003",
+      "dhcp",
+      "ipv4leases",
+      {}
+    ]
+  },
+  "http_status": 200,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[0,{\"device\":{\"br-lan\":{\"leases\":[{\"mac\":\"b827eb12abcd\",\"hostname\":\"raspberrypi\",\"accept-reconf\":false,\"flags\":[\"bound\"],\"address\":\"192.168.77.123\",\"valid\":43182},{\"mac\":\"0242c0a84d11\",\"hostname\":\"laptop-anna\",\"accept-reconf\":false,\"flags\":[\"bound\"],\"address\":\"192.168.77.126\",\"valid\":43161},{\"mac\":\"0242c0a84d12\",\"hostname\":\"\",\"accept-reconf\":false,\"flags\":[\"bound\",\"broken-hostname\"],\"address\":\"192.168.77.150\",\"valid\":43171}]}}}]}"
+}

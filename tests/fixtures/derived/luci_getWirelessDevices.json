@@ -1,0 +1,5 @@
+{
+  "source": "derived from openwrt/luci@570b4bfe6f0a luci.c (rpc_luci_get_wireless_devices_cb, rpc_luci_get_iwinfo) over openwrt/netifd examples/wireless-device.uc status()",
+  "derived": true,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[0,{\"radio0\":{\"up\":true,\"pending\":false,\"autostart\":true,\"disabled\":false,\"retry_setup_failed\":false,\"config\":{\"band\":\"5g\",\"channel\":\"36\",\"htmode\":\"VHT80\",\"disabled\":false},\"interfaces\":[{\"section\":\"default_radio0\",\"config\":{\"mode\":\"ap\",\"ssid\":\"OpenWrt\",\"encryption\":\"psk2\",\"network\":[\"lan\"]},\"ifname\":\"phy0-ap0\",\"vlans\":[],\"stations\":[],\"iwinfo\":{\"signal\":0,\"noise\":-92,\"channel\":36,\"frequency\":5180,\"mode\":\"Master\",\"ssid\":\"OpenWrt\",\"bssid\":\"02:11:22:33:44:55\"}}],\"iwinfo\":{\"channel\":36,\"frequency\":5180,\"phy\":\"phy0\",\"hwmodes\":[\"a\",\"n\",\"ac\"],\"hwmodes_text\":\"a/n/ac\"}}}]}"
+}

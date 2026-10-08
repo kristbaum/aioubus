@@ -1,0 +1,8 @@
+{
+  "source": "captured from OpenWrt 24.10.8 (docker openwrt/rootfs)",
+  "request": {
+    "raw_body": "{\"jsonrpc\": \"1.0\", \"id\": 1, \"method\": \"call\", \"params\": []}"
+  },
+  "http_status": 200,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"error\":{\"code\":-32700,\"message\":\"Parse error\"}}"
+}

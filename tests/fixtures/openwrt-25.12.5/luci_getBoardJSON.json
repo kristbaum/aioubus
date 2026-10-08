@@ -1,0 +1,17 @@
+{
+  "source": "captured from OpenWrt 25.12.5 (docker openwrt/rootfs)",
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "call",
+    "params": [
+      "00000000000000000000000000000001",
+      "luci-rpc",
+      "getBoardJSON",
+      {}
+    ]
+  },
+  "http_status": 200,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[0,{\"model\":{\"id\":\"example-board-x1\",\"name\":\"Example Board X1\"},\"network\":{\"lan\":{\"device\":\"eth0\",\"protocol\":\"static\"},\"wan\":{\"device\":\"eth1\",\"protocol\":\"dhcp\"}}}]}",
+  "redacted": "host DMI board/CPU strings replaced (container inherits host DMI)"
+}

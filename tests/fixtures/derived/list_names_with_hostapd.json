@@ -1,0 +1,5 @@
+{
+  "source": "derived from openwrt/uhttpd@3c48b9e17d20 ubus.c uh_ubus_send_list (no params -> array of names); names from hostapd ubus.c 'hostapd.%s'",
+  "derived": true,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[\"dhcp\",\"file\",\"hostapd\",\"hostapd.eth1\",\"hostapd.phy0-ap0\",\"hostapd.phy1-ap0\",\"luci-rpc\",\"session\",\"system\",\"uci\"]}"
+}

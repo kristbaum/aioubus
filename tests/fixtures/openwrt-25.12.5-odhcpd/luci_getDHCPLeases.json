@@ -1,0 +1,16 @@
+{
+  "source": "captured from OpenWrt 25.12.5-odhcpd (docker openwrt/rootfs)",
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "call",
+    "params": [
+      "00000000000000000000000000000001",
+      "luci-rpc",
+      "getDHCPLeases",
+      {}
+    ]
+  },
+  "http_status": 200,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[0,{\"dhcp_leases\":[{\"expires\":43072,\"hostname\":\"raspberrypi\",\"macaddr\":\"B8:27:EB:12:AB:CD\",\"ipaddr\":\"192.168.77.240\"},{\"expires\":43072,\"macaddr\":\"02:42:C0:A8:4D:12\",\"ipaddr\":\"192.168.77.133\"},{\"expires\":43072,\"hostname\":\"laptop-anna\",\"macaddr\":\"02:42:C0:A8:4D:11\",\"ipaddr\":\"192.168.77.132\"},{\"expires\":43184,\"interface\":\"br-lan\",\"hostname\":\"raspberrypi\",\"macaddr\":\"B8:27:EB:12:AB:CD\",\"ipaddr\":\"192.168.77.123\"},{\"expires\":43163,\"interface\":\"br-lan\",\"hostname\":\"laptop-anna\",\"macaddr\":\"02:42:C0:A8:4D:11\",\"ipaddr\":\"192.168.77.126\"},{\"expires\":43173,\"interface\":\"br-lan\",\"macaddr\":\"02:42:C0:A8:4D:12\",\"ipaddr\":\"192.168.77.150\"}],\"dhcp6_leases\":[]}]}"
+}

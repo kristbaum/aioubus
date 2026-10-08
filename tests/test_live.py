@@ -1,0 +1,127 @@
+"""Tests against a real OpenWrt device. Skipped unless configured.
+
+    AIOUBUS_LIVE_URL=http://192.168.1.1/ubus \\
+    AIOUBUS_LIVE_PASSWORD=... \\
+    [AIOUBUS_LIVE_USERNAME=root] \\
+    [AIOUBUS_LIVE_ACL_USER=hass AIOUBUS_LIVE_ACL_PASSWORD=...] \\
+    pytest -m live
+
+HTTPS URLs are tested with certificate verification disabled.
+"""
+
+import asyncio
+import contextlib
+import os
+from collections.abc import AsyncIterator
+
+import pytest
+from yarl import URL
+
+from aioubus import (
+    UbusClient,
+    UbusNotFoundError,
+    UbusPermissionError,
+)
+
+LIVE_URL = os.environ.get("AIOUBUS_LIVE_URL")
+
+pytestmark = [
+    pytest.mark.live,
+    pytest.mark.skipif(not LIVE_URL, reason="AIOUBUS_LIVE_URL not set"),
+]
+
+
+def make_client(username: str, password: str, **kwargs: object) -> UbusClient:
+    assert LIVE_URL is not None
+    url = URL(LIVE_URL)
+    assert url.host is not None
+    return UbusClient(
+        url.host,
+        username,
+        password,
+        scheme=url.scheme,  # type: ignore[arg-type]
+        port=url.explicit_port,
+        path=url.path,
+        verify_ssl=False,
+        **kwargs,  # type: ignore[arg-type]
+    )
+
+
+@pytest.fixture
+async def live() -> AsyncIterator[UbusClient]:
+    client = make_client(
+        os.environ.get("AIOUBUS_LIVE_USERNAME", "root"), os.environ["AIOUBUS_LIVE_PASSWORD"]
+    )
+    async with client:
+        yield client
+
+
+async def test_live_read_everything(live: UbusClient) -> None:
+    info = await live.login()
+    assert info.timeout > 0
+
+    hints = await live.get_host_hints()
+    assert hints
+    assert all(mac == mac.lower() for mac in hints)
+
+    await live.get_dhcp_leases()
+    board = await live.get_system_board()
+    assert board.release.distribution == "OpenWrt"
+    await live.get_board_json()
+    assert await live.get_network_devices()
+    sections = await live.uci_get_config("dhcp")
+    assert sections
+    await live.list_hostapd_interfaces()
+    assert "session" in await live.list_object_names()
+    assert "luci-rpc" in await live.list_objects("luci-rpc")
+
+
+async def test_live_dnsmasq_or_odhcpd(live: UbusClient) -> None:
+    try:
+        await live.get_dnsmasq_leases()
+    except UbusNotFoundError:
+        pytest.skip("no dnsmasq lease file")
+    with contextlib.suppress(UbusNotFoundError):  # odhcpd-ipv6only
+        await live.get_odhcpd_ipv4_leases()
+
+
+async def test_live_wireless_or_not_found(live: UbusClient) -> None:
+    try:
+        radios = await live.get_wireless_devices()
+    except UbusNotFoundError:
+        return
+    for iface in await live.list_hostapd_interfaces():
+        await live.get_hostapd_clients(iface)
+    assert radios is not None
+
+
+async def test_live_session_expiry_relogin() -> None:
+    client = make_client(
+        os.environ.get("AIOUBUS_LIVE_USERNAME", "root"),
+        os.environ["AIOUBUS_LIVE_PASSWORD"],
+        session_timeout=2,
+    )
+    async with client:
+        await client.get_system_board()
+        generation = client._token_generation
+        # Let the session expire on the device, while defeating the client's
+        # proactive renewal so the server-side rejection path is exercised.
+        await asyncio.sleep(3)
+        client._expires_at = float("inf")
+        await client.get_system_board()
+        assert client._token_generation == generation + 1
+
+
+@pytest.mark.skipif(not os.environ.get("AIOUBUS_LIVE_ACL_USER"), reason="no ACL user")
+async def test_live_restricted_acl() -> None:
+    client = make_client(
+        os.environ["AIOUBUS_LIVE_ACL_USER"], os.environ["AIOUBUS_LIVE_ACL_PASSWORD"]
+    )
+    async with client:
+        assert await client.get_host_hints()
+        await client.get_system_board()
+        await client.get_dnsmasq_leases()
+        with pytest.raises(UbusPermissionError):
+            await client.file_read("/etc/shadow")
+        with pytest.raises(UbusPermissionError):
+            await client.call("luci", "setLocaltime", localtime=0)

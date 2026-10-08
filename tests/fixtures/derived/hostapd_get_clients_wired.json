@@ -1,0 +1,5 @@
+{
+  "source": "derived from openwrt/openwrt@665fcb0f0518 hostapd ubus.c (hostapd_wired_get_clients): no freq, only 'authorized'",
+  "derived": true,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[0,{\"clients\":{\"00:1b:21:aa:bb:cc\":{\"authorized\":true}}}]}"
+}

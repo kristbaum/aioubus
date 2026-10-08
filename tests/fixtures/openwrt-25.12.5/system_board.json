@@ -1,0 +1,17 @@
+{
+  "source": "captured from OpenWrt 25.12.5 (docker openwrt/rootfs)",
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "call",
+    "params": [
+      "00000000000000000000000000000001",
+      "system",
+      "board",
+      {}
+    ]
+  },
+  "http_status": 200,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[0,{\"kernel\":\"7.0.0-38-generic\",\"hostname\":\"403d231ba3d8\",\"system\":\"Example CPU\",\"model\":\"Example Board X1\",\"board_name\":\"example-board-x1\",\"release\":{\"distribution\":\"OpenWrt\",\"version\":\"25.12.5\",\"firmware_url\":\"https://downloads.openwrt.org/\",\"revision\":\"r33051-f5dae5ece4\",\"target\":\"x86/64\",\"description\":\"OpenWrt 25.12.5 r33051-f5dae5ece4\",\"builddate\":\"1782737960\"}}]}",
+  "redacted": "host DMI board/CPU strings replaced (container inherits host DMI)"
+}

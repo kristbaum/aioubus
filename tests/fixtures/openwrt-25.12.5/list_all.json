@@ -1,0 +1,10 @@
+{
+  "source": "captured from OpenWrt 25.12.5 (docker openwrt/rootfs)",
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "list"
+  },
+  "http_status": 200,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[\"container\",\"dhcp\",\"dnsmasq\",\"dnsmasq.dns\",\"file\",\"hotplug.button\",\"hotplug.dhcp\",\"hotplug.iface\",\"hotplug.leds\",\"hotplug.neigh\",\"hotplug.net\",\"hotplug.ntp\",\"hotplug.tftp\",\"iwinfo\",\"log\",\"luci\",\"luci-rpc\",\"network\",\"network.device\",\"network.interface\",\"network.interface.lan\",\"network.interface.loopback\",\"network.rrdns\",\"rc\",\"rpc-sys\",\"service\",\"session\",\"system\",\"uci\"]}"
+}

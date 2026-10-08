@@ -1,0 +1,5 @@
+{
+  "source": "derived from unreleased Ansuel/nginx-ubus-module@20cbad73ba70 (HEAD). OpenWrt packages b2d7260 (2020), which returns uhttpd-compatible list shapes -- see tests/fixtures/openwrt-24.10.8-nginx; ubus_send_list/ubus_list_cb: named tables inside an array lose their names in JSON",
+  "derived": true,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[{\"get_clients\":{},\"del_client\":{\"addr\":\"string\",\"reason\":\"number\"}}]}"
+}
