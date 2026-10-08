@@ -7,7 +7,7 @@ name = "aioubus"
 dynamic = ["version"]
 description = "Async client for OpenWrt's ubus HTTP/JSON-RPC API"
 readme = "README.md"
-license = "Apache-2.0"
+license = "GPL-3.0-or-later"
 license-files = ["LICENSE"]
 authors = [{ name = "kristbaum", email = "max@kristenonline.de" }]
 requires-python = ">=3.14"

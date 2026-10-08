@@ -481,7 +481,3 @@ runs the live suite against it; see
 Releases follow semantic versioning and are published to PyPI from GitHub
 releases with trusted publishing (`.github/workflows/release.yml`); no API
 token is stored.
-
-## License
-
-Apache-2.0
