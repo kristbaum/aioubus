@@ -2,7 +2,7 @@
 
 This project follows [Semantic Versioning](https://semver.org/).
 
-## 0.2.0 — 2026-10-08
+## 0.3.0 — 2026-10-08
 
 Add LICENSE
 
