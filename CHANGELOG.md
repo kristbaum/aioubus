@@ -2,6 +2,10 @@
 
 This project follows [Semantic Versioning](https://semver.org/).
 
+## 0.2.0 — 2026-10-08
+
+Add LICENSE
+
 ## 0.1.0 — 2026-10-08
 
 First release.
