@@ -4,7 +4,11 @@
     AIOUBUS_LIVE_PASSWORD=... \\
     [AIOUBUS_LIVE_USERNAME=root] \\
     [AIOUBUS_LIVE_ACL_USER=hass AIOUBUS_LIVE_ACL_PASSWORD=...] \\
+    [AIOUBUS_LIVE_EXPECT_WIRED=mac=name,... AIOUBUS_LIVE_EXPECT_WIFI=mac=name,...] \\
     pytest -m live
+
+The ``EXPECT`` variables list hosts that must be visible on the router; the
+QEMU lab in ``real_test/`` sets them from its fake devices (``lab.sh test``).
 
 HTTPS URLs are tested with certificate verification disabled.
 """
@@ -18,12 +22,23 @@ import pytest
 from yarl import URL
 
 from aioubus import (
+    HostapdClient,
     UbusClient,
     UbusNotFoundError,
     UbusPermissionError,
 )
 
 LIVE_URL = os.environ.get("AIOUBUS_LIVE_URL")
+
+
+def expected_hosts(var: str) -> dict[str, str]:
+    """Parse ``mac=name,mac=name`` from an environment variable."""
+    pairs = (item.partition("=") for item in os.environ.get(var, "").split(",") if item)
+    return {mac.lower(): name for mac, _, name in pairs}
+
+
+EXPECT_WIRED = expected_hosts("AIOUBUS_LIVE_EXPECT_WIRED")
+EXPECT_WIFI = expected_hosts("AIOUBUS_LIVE_EXPECT_WIFI")
 
 pytestmark = [
     pytest.mark.live,
@@ -110,6 +125,38 @@ async def test_live_session_expiry_relogin() -> None:
         client._expires_at = float("inf")
         await client.get_system_board()
         assert client._token_generation == generation + 1
+
+
+@pytest.mark.skipif(not EXPECT_WIRED, reason="AIOUBUS_LIVE_EXPECT_WIRED not set")
+async def test_live_wired_hosts_visible(live: UbusClient) -> None:
+    hints = await live.get_host_hints()
+    assert EXPECT_WIRED.keys() <= hints.keys()
+    for mac, name in EXPECT_WIRED.items():
+        assert hints[mac].ipv4_addresses, mac
+        assert hints[mac].name == name
+
+    leases = {lease.mac: lease for lease in await live.get_dnsmasq_leases()}
+    assert EXPECT_WIRED.keys() <= leases.keys()
+    for mac, name in EXPECT_WIRED.items():
+        assert leases[mac].hostname == name
+
+
+@pytest.mark.skipif(not EXPECT_WIFI, reason="AIOUBUS_LIVE_EXPECT_WIFI not set")
+async def test_live_wifi_stations_associated(live: UbusClient) -> None:
+    interfaces = await live.list_hostapd_interfaces()
+    assert interfaces
+    stations: dict[str, HostapdClient] = {}
+    for iface in interfaces:
+        result = await live.get_hostapd_clients(iface)
+        assert result.frequency == 2412  # lab AP: 2.4 GHz, channel 1
+        stations.update(result.clients)
+    assert EXPECT_WIFI.keys() <= stations.keys()
+    for mac in EXPECT_WIFI:
+        assert stations[mac].authorized
+        assert stations[mac].associated
+
+    radios = await live.get_wireless_devices()
+    assert radios
 
 
 @pytest.mark.skipif(not os.environ.get("AIOUBUS_LIVE_ACL_USER"), reason="no ACL user")

@@ -10,3 +10,6 @@ htmlcov/
 .mypy_cache/
 .ruff_cache/
 .pytest_cache/
+
+# QEMU test lab working files (image, disk, keys, captures)
+real_test/.lab/

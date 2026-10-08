@@ -463,6 +463,11 @@ uv run mypy                   # strict
 AIOUBUS_LIVE_URL=http://192.168.1.1/ubus AIOUBUS_LIVE_PASSWORD=... uv run pytest -m live
 ```
 
+For live tests without a spare router, `real_test/lab.sh up && real_test/lab.sh test`
+boots an OpenWrt VM with fake wired and Wi-Fi clients (virtual radios) and
+runs the live suite against it; see
+[real_test/openwrt-presence-testlab.md](real_test/openwrt-presence-testlab.md).
+
 Releases follow semantic versioning and are published to PyPI from GitHub
 releases with trusted publishing (`.github/workflows/release.yml`); no API
 token is stored.
