@@ -15,6 +15,7 @@ jobs:
       - uses: astral-sh/setup-uv@v10.2.0
         with:
           python-version: "3.14"
+          cache-suffix: lint
       - run: uv sync --locked
       - run: uv run ruff format --check .
       - run: uv run ruff check --output-format=github .
@@ -26,6 +27,7 @@ jobs:
       - uses: astral-sh/setup-uv@v10.2.0
         with:
           python-version: "3.14"
+          cache-suffix: typecheck
       - run: uv sync --locked
       - run: uv run ty check
 
@@ -41,6 +43,7 @@ jobs:
       - uses: astral-sh/setup-uv@v10.2.0
         with:
           python-version: ${{ matrix.python-version }}
+          cache-suffix: test-${{ matrix.resolution }}
       - name: Install (locked)
         if: matrix.resolution == 'locked'
         run: uv sync --locked
@@ -56,6 +59,7 @@ jobs:
       - uses: astral-sh/setup-uv@v10.2.0
         with:
           python-version: "3.14"
+          cache-suffix: build
       - run: uv build
       - name: Smoke-test the wheel
         run: |
