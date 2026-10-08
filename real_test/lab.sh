@@ -261,9 +261,34 @@ cmd_capture() {
   fakedevs up all
   fakedevs wait 60
   local out="$LAB_DIR/captures/openwrt-$OPENWRT_VERSION-hwsim"
+
+  # rpcd's root login has `read '*'`, i.e. every ACL group, not every
+  # procedure. Without this group, root gets -32002 for these calls instead
+  # of the status codes the fixtures are meant to record (method not found,
+  # no payload, not found). Installed only for the capture.
+  local acl=/usr/share/rpcd/acl.d/aioubus-capture.json
+  rssh "cat > $acl && service rpcd restart" <<'EOF'
+{
+	"aioubus-capture": {
+		"description": "Capture only: makes procedure status codes reachable for root",
+		"read": {
+			"ubus": { "luci-rpc": [ "noSuchMethod" ], "file": [ "read" ] },
+			"file": { "/tmp/does-not-exist": [ "read" ] }
+		},
+		"write": {
+			"ubus": { "uci": [ "revert" ] },
+			"uci": [ "dhcp" ]
+		}
+	}
+}
+EOF
+  sleep 2
+  local rc=0
   (cd "$REPO" && AIOUBUS_PASSWORD="$ROOT_PASSWORD" AIOUBUS_ACL_USER="$ACL_USER" \
     AIOUBUS_ACL_PASSWORD="$ACL_PASSWORD" uv run python scripts/capture_fixtures.py \
-    "http://$ROUTER/ubus" "$out" "$OPENWRT_VERSION (QEMU x86-64, mac80211_hwsim)")
+    "http://$ROUTER/ubus" "$out" "$OPENWRT_VERSION (QEMU x86-64, mac80211_hwsim)") || rc=$?
+  rssh "rm -f $acl && service rpcd restart"
+  (( rc == 0 )) || die "capture failed"
   echo "review, then copy what is useful into tests/fixtures/"
 }
 

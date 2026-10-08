@@ -55,13 +55,31 @@ async def test_login_requests_session_timeout(ubus: FakeUbus) -> None:
         "127.0.0.1",
         USERNAME,
         PASSWORD,
-        scheme=ubus.scheme,  # type: ignore[arg-type]
+        scheme=ubus.scheme,
         port=ubus.port,
         verify_ssl=False,
         session_timeout=600,
     ) as client:
         await client.login()
     assert ubus.requests[0]["params"][3]["timeout"] == 600
+
+
+@pytest.mark.parametrize("release", RELEASES)
+async def test_login_short_timeout(ubus: FakeUbus, release: str) -> None:
+    """rpcd grants the requested timeout; the client tracks it for renewal."""
+    ubus.respond(body("login_short_timeout", release))
+    async with UbusClient(
+        "127.0.0.1",
+        USERNAME,
+        PASSWORD,
+        scheme=ubus.scheme,
+        port=ubus.port,
+        verify_ssl=False,
+        session_timeout=1,
+    ) as client:
+        info = await client.login()
+    assert ubus.requests[0]["params"][3]["timeout"] == 1
+    assert info.timeout == 1
 
 
 @pytest.mark.parametrize("fixture", ["login_wrong_password", "login_unknown_user"])
@@ -111,14 +129,19 @@ async def test_session_reused_across_calls(client: UbusClient, ubus: FakeUbus) -
     assert [r["params"][0] for r in requests[1:]] == [TOKEN_1, TOKEN_1]
 
 
+# All three are captured -32002 rejections: an expired session, a token rpcd
+# never issued, and the null session ID.
+@pytest.mark.parametrize(
+    "rejection", ["call_expired_session", "call_bogus_session", "call_null_session"]
+)
 @pytest.mark.parametrize("release", RELEASES)
 async def test_session_expiry_mid_session_relogin_and_retry(
-    client: UbusClient, ubus: FakeUbus, release: str
+    client: UbusClient, ubus: FakeUbus, release: str, rejection: str
 ) -> None:
-    """Expired session (captured -32002) -> one re-login -> retry succeeds."""
+    """Rejected session -> one re-login -> retry succeeds."""
     ubus.respond(login_body(TOKEN_1, release))
     ubus.respond(body("luci_getHostHints", release))
-    ubus.respond(body("call_expired_session", release))
+    ubus.respond(body(rejection, release))
     ubus.respond(login_body(TOKEN_2, release))
     ubus.respond(body("luci_getHostHints", release))
 

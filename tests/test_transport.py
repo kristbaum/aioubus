@@ -2,6 +2,7 @@
 
 import logging
 import ssl
+from typing import Any
 
 import aiohttp
 import pytest
@@ -30,8 +31,8 @@ from aioubus import UbusClient, UbusError, UbusSSLError
         ({"scheme": "http", "port": 80}, "http://192.168.1.1/ubus"),
     ],
 )
-async def test_url(kwargs: dict[str, object], expected: str) -> None:
-    async with UbusClient("192.168.1.1", "u", "p", **kwargs) as client:  # type: ignore[arg-type]
+async def test_url(kwargs: dict[str, Any], expected: str) -> None:
+    async with UbusClient("192.168.1.1", "u", "p", **kwargs) as client:
         assert client.url == expected
 
 
@@ -41,9 +42,9 @@ async def test_url_ipv6_host() -> None:
 
 
 @pytest.mark.parametrize("kwargs", [{"scheme": "ftp"}, {"timeout": 0}, {"timeout": -1}])
-def test_invalid_arguments(kwargs: dict[str, object]) -> None:
+def test_invalid_arguments(kwargs: dict[str, Any]) -> None:
     with pytest.raises(ValueError, match=r"scheme|timeout"):
-        UbusClient("h", "u", "p", **kwargs)  # type: ignore[arg-type]
+        UbusClient("h", "u", "p", **kwargs)
 
 
 async def test_https_self_signed_rejected_when_verifying(server_ssl: ssl.SSLContext) -> None:
@@ -95,7 +96,7 @@ async def test_injected_session_is_used_and_not_closed(ubus: FakeUbus) -> None:
             "u",
             "p",
             session=session,
-            scheme=ubus.scheme,  # type: ignore[arg-type]
+            scheme=ubus.scheme,
             port=ubus.port,
             verify_ssl=False,
         ) as client:
@@ -112,7 +113,7 @@ async def test_owned_session_is_closed(ubus: FakeUbus) -> None:
         "127.0.0.1",
         "u",
         "p",
-        scheme=ubus.scheme,  # type: ignore[arg-type]
+        scheme=ubus.scheme,
         port=ubus.port,
         verify_ssl=False,
     )

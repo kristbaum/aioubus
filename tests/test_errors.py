@@ -4,7 +4,7 @@ import json
 
 import aiohttp
 import pytest
-from conftest import RELEASES, FakeUbus, body, login_body, result, rpc_error
+from conftest import RELEASES, FakeUbus, Scheme, body, login_body, result, rpc_error
 
 from aioubus import (
     UbusCallError,
@@ -178,7 +178,7 @@ async def test_real_timeout(ubus: FakeUbus) -> None:
         "127.0.0.1",
         "root",
         "x",
-        scheme=ubus.scheme,  # type: ignore[arg-type]
+        scheme=ubus.scheme,
         port=ubus.port,
         verify_ssl=False,
         timeout=0.2,
@@ -187,12 +187,12 @@ async def test_real_timeout(ubus: FakeUbus) -> None:
             await client.login()
 
 
-async def test_real_connection_refused(unused_tcp_port: int, scheme: str) -> None:
+async def test_real_connection_refused(unused_tcp_port: int, scheme: Scheme) -> None:
     async with UbusClient(
         "127.0.0.1",
         "root",
         "x",
-        scheme=scheme,  # type: ignore[arg-type]
+        scheme=scheme,
         port=unused_tcp_port,
     ) as client:
         with pytest.raises(UbusConnectionError):
@@ -212,7 +212,7 @@ async def test_wrong_endpoint_path(ubus: FakeUbus) -> None:
         "127.0.0.1",
         "root",
         "x",
-        scheme=ubus.scheme,  # type: ignore[arg-type]
+        scheme=ubus.scheme,
         port=ubus.port,
         path="/cgi-bin/luci/rpc",
         verify_ssl=False,

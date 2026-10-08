@@ -46,19 +46,20 @@ pytestmark = [
 ]
 
 
-def make_client(username: str, password: str, **kwargs: object) -> UbusClient:
+def make_client(username: str, password: str, *, session_timeout: int | None = None) -> UbusClient:
     assert LIVE_URL is not None
     url = URL(LIVE_URL)
     assert url.host is not None
+    assert url.scheme in {"http", "https"}, LIVE_URL
     return UbusClient(
         url.host,
         username,
         password,
-        scheme=url.scheme,  # type: ignore[arg-type]
+        scheme="https" if url.scheme == "https" else "http",
         port=url.explicit_port,
         path=url.path,
         verify_ssl=False,
-        **kwargs,  # type: ignore[arg-type]
+        session_timeout=session_timeout,
     )
 
 
@@ -89,6 +90,16 @@ async def test_live_read_everything(live: UbusClient) -> None:
     await live.list_hostapd_interfaces()
     assert "session" in await live.list_object_names()
     assert "luci-rpc" in await live.list_objects("luci-rpc")
+
+
+async def test_live_uci_missing(live: UbusClient) -> None:
+    with pytest.raises(UbusNotFoundError):
+        await live.uci_get_section("dhcp", "doesnotexist")
+    with pytest.raises(UbusNotFoundError):
+        await live.uci_get_option("dhcp", "lan", "doesnotexist")
+    # uci ACLs are per config name, and no ACL names a config that does not exist.
+    with pytest.raises(UbusPermissionError):
+        await live.uci_get_config("doesnotexist")
 
 
 async def test_live_dnsmasq_or_odhcpd(live: UbusClient) -> None:

@@ -27,7 +27,7 @@ jobs:
         with:
           python-version: "3.14"
       - run: uv sync --locked
-      - run: uv run mypy
+      - run: uv run ty check
 
   test:
     runs-on: ubuntu-latest

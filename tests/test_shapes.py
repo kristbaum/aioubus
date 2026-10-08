@@ -4,7 +4,8 @@ Every parser is fed systematically corrupted versions of real captured
 payloads: each nested value is replaced in turn by values of the wrong type,
 and each key is deleted. Parsing must either succeed or raise
 ``UbusResponseError`` -- never ``TypeError``, ``KeyError``, ``AttributeError``
-or ``ValueError``.
+or ``ValueError``. The one exception is a missing payload, which ``uci get``
+really returns for a missing section or option (``UbusNotFoundError``).
 """
 
 import contextlib
@@ -16,7 +17,7 @@ from typing import Any
 import pytest
 from conftest import body, derived
 
-from aioubus import UbusResponseError, normalize_mac
+from aioubus import UbusNotFoundError, UbusResponseError, normalize_mac
 from aioubus.models import (
     BoardJson,
     HostapdClients,
@@ -68,17 +69,12 @@ CASES: list[tuple[str, Parser, Any]] = [
         payload(body("luci_getNetworkDevices")),
     ),
     (
-        "wireless",
-        _dict_each(WirelessRadio.from_json),
-        payload(derived("luci_getWirelessDevices")),
-    ),
-    (
         "hostapd",
         lambda p: HostapdClients.from_json("phy0-ap0", p),
         payload(derived("hostapd_get_clients_wireless")),
     ),
     (
-        "wireless_hwsim",
+        "wireless",
         _dict_each(WirelessRadio.from_json),
         payload(body("luci_getWirelessDevices", "openwrt-25.12.5-hwsim")),
     ),
@@ -141,7 +137,10 @@ def test_corrupted_payloads_only_raise_response_error(name: str, parse: Parser, 
     count = 0
     for mutated in _mutations(data):
         count += 1
-        with contextlib.suppress(UbusResponseError):
+        allowed: tuple[type[Exception], ...] = (UbusResponseError,)
+        if mutated is None:
+            allowed += (UbusNotFoundError,)
+        with contextlib.suppress(*allowed):
             parse(mutated)
     assert count > 10
 

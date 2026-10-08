@@ -157,7 +157,9 @@ An expired session is indistinguishable from an ACL denial at the HTTP layer
 (both are `-32002`), which is why the one retry is needed. A ubus
 `PERMISSION_DENIED` *status* (6) returned by a procedure is not retried: uhttpd
 has already validated the session before the procedure runs, so status 6
-means a genuine denial (e.g. `file.read` of a path outside the ACL).
+comes from the procedure's own ACL check (e.g. `file.read` of a path outside
+the ACL, or `uci get` of a config no ACL names, including one that does not
+exist).
 
 ## API
 
@@ -263,6 +265,12 @@ iface = await client.uci_get_option("dhcp", "lan", "interface")  # 'lan'
 
 `UciSection`: `name`, `type`, `anonymous`, `index`, `options`. Sections
 from `uci_get_config` are ordered as in the file.
+
+A missing section or option raises `UbusNotFoundError` (rpcd answers status 0
+with no payload). A missing config raises `UbusPermissionError`, because rpcd
+checks the session's `uci` ACL first. That ACL lists config names, and none
+lists a config that does not exist. This holds for root too: root's login
+grants every ACL *group*, not every config.
 
 ### `file_read()` and `file_read_bytes()`
 
@@ -461,7 +469,7 @@ Contributions of hostapd captures from real Wi-Fi hardware are welcome.
 uv sync
 uv run pytest                 # unit tests: a local HTTP/HTTPS server replays captured bodies
 uv run ruff check . && uv run ruff format --check .
-uv run mypy                   # strict
+uv run ty check               # type check (src, tests, scripts)
 AIOUBUS_LIVE_URL=http://192.168.1.1/ubus AIOUBUS_LIVE_PASSWORD=... uv run pytest -m live
 ```
 

@@ -15,5 +15,7 @@ First release.
   `hostapd.* get_clients`, `uci get`, `file read`, odhcpd `ipv4leases`,
   dnsmasq lease-file parsing, object listing, and a generic `call()`.
 - Exception hierarchy rooted at `UbusError`.
+- `uci_get_section()` and `uci_get_option()` raise `UbusNotFoundError` for a
+  missing section or option, which rpcd reports as status 0 without a payload.
 - `hostapd.* get_clients` and `getWirelessDevices` verified against captured
   traffic from virtual radios in the QEMU test lab (`real_test/`).

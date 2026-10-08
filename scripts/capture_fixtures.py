@@ -22,7 +22,13 @@ The committed fixtures were captured from ``openwrt/rootfs`` Docker images
 Docker network, and two extra ACL groups: the README's ``aioubus`` group for
 the restricted user, and a capture-only group granting root
 ``luci-rpc.noSuchMethod``, ``file.read`` of ``/tmp/does-not-exist`` and
-``uci.revert`` so those status codes are reachable.
+``uci.revert`` so those status codes are reachable. Without that group root
+gets ``-32002`` for these calls: its login grants every ACL group, not every
+procedure.
+
+``openwrt-25.12.5-hwsim`` was captured from the QEMU lab with
+``real_test/lab.sh capture``, which installs the capture-only group for the
+duration of the capture.
 """
 
 import json
@@ -144,6 +150,12 @@ def main() -> None:
         ),
         "uci_get_section": ("uci", "get", {"config": "dhcp", "section": "lan"}),
         "uci_get_missing_config": ("uci", "get", {"config": "doesnotexist"}),
+        "uci_get_missing_section": ("uci", "get", {"config": "dhcp", "section": "doesnotexist"}),
+        "uci_get_missing_option": (
+            "uci",
+            "get",
+            {"config": "dhcp", "section": "lan", "option": "doesnotexist"},
+        ),
         "file_read_leases": ("file", "read", {"path": "/tmp/dhcp.leases"}),  # noqa: S108
         "file_read_missing": ("file", "read", {"path": "/tmp/does-not-exist"}),  # noqa: S108
         "dhcp_ipv4leases": ("dhcp", "ipv4leases", {}),

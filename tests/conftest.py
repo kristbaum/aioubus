@@ -19,7 +19,7 @@ from collections import deque
 from collections.abc import AsyncIterator, Callable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 import pytest
 import trustme
@@ -36,6 +36,8 @@ PASSWORD = "s3cret-Pa55word"
 # Placeholder tokens written by the capture script.
 TOKEN_1 = "00000000000000000000000000000001"
 TOKEN_2 = "0000000000000000000000000000beef"
+
+type Scheme = Literal["http", "https"]
 
 _TOKEN_RE = re.compile(r'"ubus_rpc_session":"[0-9a-f]{32}"')
 
@@ -76,7 +78,7 @@ class _Response:
 class FakeUbus:
     """A real HTTP(S) server that replays queued ubus responses."""
 
-    def __init__(self, scheme: str, path: str = "/ubus") -> None:
+    def __init__(self, scheme: Scheme, path: str = "/ubus") -> None:
         self.scheme = scheme
         self.path = path
         self.requests: list[Any] = []
@@ -143,8 +145,8 @@ def server_ssl(ca: trustme.CA) -> ssl.SSLContext:
 
 
 @pytest.fixture(params=["http", "https"])
-def scheme(request: pytest.FixtureRequest) -> str:
-    value: str = request.param
+def scheme(request: pytest.FixtureRequest) -> Scheme:
+    value: Scheme = request.param
     return value
 
 
@@ -160,7 +162,7 @@ async def start_server(fake: FakeUbus, server_ssl: ssl.SSLContext | None) -> web
 
 
 @pytest.fixture
-async def ubus(scheme: str, server_ssl: ssl.SSLContext) -> AsyncIterator[FakeUbus]:
+async def ubus(scheme: Scheme, server_ssl: ssl.SSLContext) -> AsyncIterator[FakeUbus]:
     fake = FakeUbus(scheme)
     runner = await start_server(fake, server_ssl if scheme == "https" else None)
     yield fake
@@ -173,7 +175,7 @@ async def client(ubus: FakeUbus) -> AsyncIterator[UbusClient]:
         "127.0.0.1",
         USERNAME,
         PASSWORD,
-        scheme=ubus.scheme,  # type: ignore[arg-type]
+        scheme=ubus.scheme,
         port=ubus.port,
         verify_ssl=False,
         timeout=5,

@@ -151,8 +151,11 @@ checks the library against real devices.
 **Capture fixtures with Wi-Fi data:** `./real_test/lab.sh capture` brings
 the fakes up and runs `scripts/capture_fixtures.py` against the lab. The
 output goes to `real_test/.lab/captures/openwrt-<version>-hwsim/`, including
-`hostapd_get_clients_phy0-ap0.json`. Review the files, then copy the useful
-ones into `tests/fixtures/`.
+`hostapd_get_clients_phy0-ap0.json`. During the capture, `capture` installs a
+temporary ACL group. Without it, root gets `-32002` for some of the error
+scenarios, because root's login grants every ACL group, not every procedure.
+The group is removed afterwards, so `test` always runs against the stock ACLs.
+Review the files, then copy the useful ones into `tests/fixtures/`.
 
 **Home Assistant (ubus integration):** HA must reach `192.168.77.1`, which
 exists only on this host. Run HA Core or the HA container on the same host;

@@ -1,0 +1,19 @@
+{
+  "source": "captured from OpenWrt 25.12.5 (QEMU x86-64, mac80211_hwsim)",
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "call",
+    "params": [
+      "00000000000000000000000000000001",
+      "uci",
+      "get",
+      {
+        "config": "dhcp",
+        "section": "doesnotexist"
+      }
+    ]
+  },
+  "http_status": 200,
+  "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[0]}"
+}

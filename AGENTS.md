@@ -22,7 +22,7 @@ CI runs all of these. Run them before you finish a change:
 ```bash
 uv sync
 uv run ruff format --check . && uv run ruff check .
-uv run mypy                    # strict, covers src, tests and scripts
+uv run ty check                # type check: src, tests and scripts; warnings fail
 uv run pytest                  # coverage gate in CI: --cov-fail-under=95
 ```
 
@@ -45,6 +45,10 @@ session handling. It is documented in
 - `./real_test/lab.sh capture` records fixtures, including hostapd data
   from virtual radios, into `real_test/.lab/captures/`. Review them before
   you copy them into `tests/fixtures/`.
+- rpcd's root is not unrestricted: its login grants every ACL *group*, so
+  root can call only what some installed ACL grants (`-32002` otherwise),
+  and `uci` access is per config name. Keep this in mind when you interpret
+  a status from the lab.
 - New live tests go in `tests/test_live.py`, marked `live`. They must skip
   cleanly when their `AIOUBUS_LIVE_*` variables are unset.
 - The lab installs the ACL from the README's *Minimal ACL* section verbatim.

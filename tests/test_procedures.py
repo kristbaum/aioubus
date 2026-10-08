@@ -8,6 +8,8 @@ from conftest import RELEASES, TOKEN_1, FakeUbus, body, derived, login_body, res
 from aioubus import (
     HostHint,
     UbusClient,
+    UbusNotFoundError,
+    UbusPermissionError,
     UbusResponseError,
     parse_dnsmasq_leases,
 )
@@ -306,6 +308,8 @@ async def test_wireless_devices_captured(client: UbusClient, ubus: FakeUbus) -> 
     radios = await client.get_wireless_devices()
 
     assert list(radios) == [f"radio{i}" for i in range(8)]
+    assert radios["radio0"].up
+    assert radios["radio0"].disabled is False
     (ap,) = radios["radio0"].interfaces
     assert (ap.section, ap.ifname, ap.ssid, ap.mode) == (
         "default_radio0",
@@ -370,6 +374,52 @@ async def test_uci_get_option_missing_value(client: UbusClient, ubus: FakeUbus) 
     ubus.respond(result(0, {}))
     with pytest.raises(UbusResponseError):
         await client.uci_get_option("dhcp", "lan", "nope")
+
+
+async def test_uci_get_missing_section_and_option(client: UbusClient, ubus: FakeUbus) -> None:
+    """rpcd answers both with status 0 and no payload (captured)."""
+    ubus.respond(body("uci_get_missing_section", "openwrt-25.12.5-hwsim"))
+    ubus.respond(body("uci_get_missing_option", "openwrt-25.12.5-hwsim"))
+
+    with pytest.raises(UbusNotFoundError):
+        await client.uci_get_section("dhcp", "doesnotexist")
+    with pytest.raises(UbusNotFoundError):
+        await client.uci_get_option("dhcp", "lan", "doesnotexist")
+
+
+@pytest.mark.parametrize("fixture", ["uci_get_missing_config", "acl_uci_get_denied_config"])
+@pytest.mark.parametrize("release", RELEASES)
+async def test_uci_get_config_outside_acl(
+    client: UbusClient, ubus: FakeUbus, fixture: str, release: str
+) -> None:
+    """uci ACLs are per config name, so a config that does not exist is denied.
+
+    Captured as root for a missing config, and as the restricted user for an
+    existing one (``rpcd``). Status 6 is not retried.
+    """
+    ubus.respond(body(fixture, release))
+
+    with pytest.raises(UbusPermissionError) as excinfo:
+        await client.uci_get_config("doesnotexist")
+
+    assert excinfo.value.status == 6
+    assert len(ubus.requests) == 2  # login and the call, no re-login
+
+
+@pytest.mark.parametrize("release", RELEASES)
+async def test_restricted_session_reads(client: UbusClient, ubus: FakeUbus, release: str) -> None:
+    """Calls the README's minimal ACL allows, captured as the restricted user."""
+    ubus.respond(body("acl_getHostHints", release))
+    ubus.respond(body("acl_system_board", release))
+    ubus.respond(body("acl_uci_get_allowed", release))
+
+    hints = await client.get_host_hints()
+    board = await client.get_system_board()
+    sections = await client.uci_get_config("dhcp", section_type="dnsmasq")
+
+    assert hints
+    assert board.release.distribution == "OpenWrt"
+    assert [s.type for s in sections.values()] == ["dnsmasq"]
 
 
 async def test_file_read(client: UbusClient, ubus: FakeUbus) -> None:
@@ -437,20 +487,6 @@ async def test_network_devices(client: UbusClient, ubus: FakeUbus) -> None:
     assert devices["lo"].mac is None or devices["lo"].mac == "00:00:00:00:00:00"
 
 
-async def test_wireless_devices(client: UbusClient, ubus: FakeUbus) -> None:
-    ubus.respond(derived("luci_getWirelessDevices"))
-
-    radios = await client.get_wireless_devices()
-
-    radio = radios["radio0"]
-    assert radio.up
-    assert radio.disabled is False
-    (iface,) = radio.interfaces
-    assert iface.ifname == "phy0-ap0"
-    assert iface.ssid == "OpenWrt"
-    assert iface.mode == "Master"
-
-
 async def test_list_objects(client: UbusClient, ubus: FakeUbus) -> None:
     await client.login()
     ubus.respond(body("list_pattern_multi"))
@@ -467,6 +503,26 @@ async def test_list_objects(client: UbusClient, ubus: FakeUbus) -> None:
     assert "board" in objects["system"]
     assert none == {}
     assert ubus.requests[1]["params"] == ["system", "file"]
+
+
+@pytest.mark.parametrize("release", ["openwrt-25.12.5", "openwrt-24.10.8"])
+async def test_host_procedures_live_on_luci_rpc(
+    client: UbusClient, ubus: FakeUbus, release: str
+) -> None:
+    """The wrapped procedures are on ``luci-rpc``; ``luci`` is LuCI's own backend."""
+    await client.login()
+    ubus.respond(body("list_pattern_luci_rpc", release))
+    ubus.respond(body("list_pattern_luci", release))
+    ubus.respond(body("list_empty_params", release))
+
+    luci_rpc = await client.list_objects("luci-rpc")
+    luci = await client.list_objects("luci")
+    nothing = await client.list_objects("doesnotexist")
+
+    wrapped = {"getHostHints", "getDHCPLeases", "getWirelessDevices", "getNetworkDevices"}
+    assert wrapped <= luci_rpc["luci-rpc"].keys()
+    assert not wrapped & luci["luci"].keys()
+    assert nothing == {}
 
 
 async def test_list_objects_nginx_shape_is_rejected(client: UbusClient, ubus: FakeUbus) -> None:

@@ -25,7 +25,7 @@ from ._parse import (
     parse_mac,
     str_tuple,
 )
-from .exceptions import UbusResponseError
+from .exceptions import UbusNotFoundError, UbusResponseError
 
 _EMPTY: Mapping[str, Any] = MappingProxyType({})
 
@@ -621,6 +621,9 @@ class UciSection:
 
 
 def parse_uci_value(payload: object, where: str) -> UciValue:
+    # rpcd answers a missing section or option with status 0 and no payload.
+    if payload is None:
+        raise UbusNotFoundError(f"{where}: no such option")
     payload = _payload(payload, where)
     if "value" not in payload:
         raise UbusResponseError(f"{where}: missing 'value'")
@@ -628,6 +631,8 @@ def parse_uci_value(payload: object, where: str) -> UciValue:
 
 
 def parse_uci_section(payload: object, where: str) -> UciSection:
+    if payload is None:
+        raise UbusNotFoundError(f"{where}: no such section")
     payload = _payload(payload, where)
     if "values" not in payload:
         raise UbusResponseError(f"{where}: missing 'values'")
