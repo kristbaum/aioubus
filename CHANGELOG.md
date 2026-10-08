@@ -2,6 +2,10 @@
 
 This project follows [Semantic Versioning](https://semver.org/).
 
+## 0.4.0 — 2026-10-08
+
+Fix metadata
+
 ## 0.3.0 — 2026-10-08
 
 Add LICENSE

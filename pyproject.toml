@@ -9,7 +9,7 @@ description = "Async client for OpenWrt's ubus HTTP/JSON-RPC API"
 readme = "README.md"
 license = "GPL-3.0-or-later"
 license-files = ["LICENSE"]
-authors = [{ name = "kristbaum", email = "max@kristenonline.de" }]
+authors = [{ name = "kristbaum"}]
 requires-python = ">=3.14"
 dependencies = ["aiohttp>=3.13", "yarl>=1.21"]
 keywords = ["openwrt", "ubus", "rpcd", "luci", "asyncio", "home-assistant"]
